@@ -54,7 +54,7 @@ const FilterCard = () => {
       <hr className=" mt-3" />
       <RadioGroup>
         {filterData.map((data, index) => (
-          <div>
+          <div key={`${data.filterType}-${index}`}>
             <h1 className=" font-bold text-lg">{data.filterType}</h1>
             <hr className=" mt-3" />
             {data.array.map((item, index) => (

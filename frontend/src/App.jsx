@@ -6,37 +6,45 @@ import Signup from "./components/auth/Signup";
 import Jobs from "./components/Jobs";
 import Browse from "./components/Browse";
 import Profile from "./components/Profile";
+import JobDescription from "./components/jobDescription";
 
 const appRouter = createBrowserRouter([
   {
-    path:'/',
-    element:<Home/>
+    path: "/",
+    element: <Home />,
   },
   {
-    path:'/login',
-    element:<Login/>
-  },{
-    path:'/signup',
-    element:<Signup/>
-  },{
-    path:'/jobs',
-    element:<Jobs/>
+    path: "/login",
+    element: <Login />,
   },
   {
-    path:'/browse',
-    element:<Browse/>
+    path: "/signup",
+    element: <Signup />,
   },
   {
-    path:'/profile',
-    element:<Profile/>
+    path: "/jobs",
+    element: <Jobs />,
   },
-
-])
+  {
+    path: "/description/:id",
+    element: <JobDescription/>,
+  },
+  {
+    path: "/browse",
+    element: <Browse />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
+  },
+]);
 
 function App() {
-  return <>
-    <RouterProvider router = {appRouter}/>
-  </>;
+  return (
+    <>
+      <RouterProvider router={appRouter} />
+    </>
+  );
 }
 
-export default App;
+export default App;
