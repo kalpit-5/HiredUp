@@ -55,7 +55,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     }
 
     try {
-
+setLoading(true)
       const res = await axios.post(
         `${USER_API_END_POINT}/profile/update`,
         formData,
@@ -73,9 +73,11 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     } catch (error) {
       console.log(error);
       toast.success(res.data.message);
+    } finally {
+      setLoading(false)
     }
     setOpen(false);
-    console.log(input);
+    // console.log(input); ////////////////////////////////////////////////////////////////
   };
 
   return (

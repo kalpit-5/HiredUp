@@ -23,7 +23,7 @@ const Profile = () => {
         <div className="flex justify-between">
           <div className=" flex items-center gap-4">
             <Avatar className="h-24 w-24">
-              <AvatarImage src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+              <AvatarImage src={user?.profile?.profilePhoto || "https://photosking.net/wp-content/uploads/2024/05/no-dp-pic_23.webp" } />
             </Avatar>
 
             <div>
@@ -66,7 +66,7 @@ const Profile = () => {
           {isResume ? (
             <a
               target="blank"
-              href="https://leetcode.com/u/Kalpit_5/"
+              href={user?.profile?.resume}
               className=" text-blue-500 w-full hover:underline cursor-pointer"
             >
               

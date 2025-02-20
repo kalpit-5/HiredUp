@@ -15,6 +15,11 @@ export const register = async (req, res) => {
       });
     }
 
+    const file = req.file;
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
+
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
@@ -31,6 +36,9 @@ export const register = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
+      profile:{
+        profilePhoto:cloudResponse.secure_url,
+      }
     });
     return res.status(201).json({
       message: "account created successfully",
@@ -96,7 +104,7 @@ export const login = async (req, res) => {
       role: user.role,
       profile: user.profile,
     };
-
+    
     return res
       .status(200)
       .cookie("token", token, {
@@ -132,25 +140,22 @@ export const updateProfile = async (req, res) => {
     const file = req.file;
 
     // cloudanary ayega idhar..........
-    const fileUri =  getDataUri(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-
-    // Assuming getDataUri returns a data URI string, no need for fileUri.content
-// const fileUri = getDataUri(file);
-
-// // Use the correct Cloudinary uploader method to upload
-// const cloudResponse = await cloudinary.uploader.upload(fileUri);
-
-    
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+      resource_type: "auto", // Handles images, videos, PDFs, etc.
+    });
 
     let skillsArray;
-    if ( skills ){
+    if (skills) {
       skillsArray = skills.split(",");
     }
 
     const userId = req.id;
     let user = await User.findById(userId);
-
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url; // Cloudinary URL
+      user.profile.resumeOriginalName = file.originalname; // Original file name
+    }
     if (!user) {
       return res.status(400).json({
         message: " user not found ",
@@ -160,18 +165,17 @@ export const updateProfile = async (req, res) => {
 
     //updating data
 
-    if(fullname) user.fullname = fullname;
-    if(email) user.email = email;
-    if(phoneNumber) user.phoneNumber = phoneNumber;
-    if(bio) user.profile.bio = bio;
-    if(skills) user.profile.skills = skillsArray;
-    
-    
+    if (fullname) user.fullname = fullname;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (bio) user.profile.bio = bio;
+    if (skills) user.profile.skills = skillsArray;
+
     //user resume comes later herer .........
 
-    if(cloudResponse){
-      user.profile.resume = cloudResponse.secure_url // save the cloudinary url
-      user.profile.resumeOriginalName = file.originalname // save the original file name 
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url; // save the cloudinary url
+      user.profile.resumeOriginalName = file.originalname; // save the original file name
     }
 
     await user.save();

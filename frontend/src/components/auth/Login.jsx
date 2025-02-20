@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
 
-
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -88,26 +87,30 @@ const Login = () => {
           <div className="flex items-center justify-between ">
             <RadioGroup className="flex items-center gap-4 my-5">
               <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="student"
-                  checked={input.role === "student"}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="option-one">Student</Label>
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <Input
+                    type="radio"
+                    name="role"
+                    value="student"
+                    checked={input.role === "student"}
+                    onChange={changeEventHandler}
+                    className="cursor-pointer"
+                  />
+                  <span className=" font-semibold text-sm">Student</span>{" "}
+                </label>
               </div>
               <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="recruiter"
-                  checked={input.role === "recruiter"}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="option-two">Recruiter</Label>
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <Input
+                    type="radio"
+                    name="role"
+                    value="recruiter"
+                    checked={input.role === "recruiter"}
+                    onChange={changeEventHandler}
+                    className="cursor-pointer"
+                  />
+                  <span className=" font-semibold text-sm">Recruiter</span>{" "}
+                </label>
               </div>
             </RadioGroup>
           </div>
