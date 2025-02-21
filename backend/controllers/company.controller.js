@@ -1,4 +1,6 @@
 import { Company } from "../models/company.model.js";
+import getDataUri from "../utils/datauri.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const registerCompany = async (req, res) => {
   try {
@@ -14,7 +16,7 @@ export const registerCompany = async (req, res) => {
 
     if (company) {
       return res.status(200).json({
-        message: "you cant reister the same company twice",
+        message: "you can't register the same company twice",
         success: false,
       });
     }
@@ -47,10 +49,10 @@ export const getCompany = async (req, res) => {
     }
 
     return res.status(200).json({
-        message:"company data getted successfully",
-        companies,
-        success:true
-    })
+      message: "company data getted successfully",
+      companies,
+      success: true,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -81,24 +83,32 @@ export const updateCompany = async (req, res) => {
   try {
     const { name, discriptipn, website, location } = req.body;
     const file = req.file;
-    //cloudnary idhar aayega
+    //cloudnary idhar aayega                             
 
-    const updatedData = {name, discriptipn, website, location};
-    const company = await Company.findByIdAndUpdate(req.params.id,updatedData,{new:true});
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    const logo = cloudResponse.secure_url;
 
-    if (!company){
-        return res.status(400).json({
-            message:"company not found",
-            success:false
-        })
+    const updatedData = { name, discriptipn, website, location ,logo };
+    const company = await Company.findByIdAndUpdate(
+      req.params.id,
+      updatedData,
+      { new: true }
+    );
+
+    if (!company) {
+      return res.status(400).json({
+        message: "company not found",
+        success: false,
+      });
     }
 
     return res.status(200).json({
-        message:"company data updated successfully",
-        success:true
-    })
-
+      message: "company data updated successfully",
+      success: true,
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
+

@@ -39,15 +39,28 @@ const Navbar = () => {
         </div>
         <div className="flex items-center gap-16">
           <ul className=" flex font-medium items-center gap-5">
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/jobs">Jobs</Link>
-            </li>
-            <li>
-              <Link to="/browse">Browse</Link>
-            </li>
+            {user && user.role === "recruiter" ? (
+              <>
+                <li>
+                  <Link to="/admin/compnaies">Companies</Link>
+                </li>
+                <li>
+                  <Link to="/admin/jobs">Jobs</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to="/jobs">Jobs</Link>
+                </li>
+                <li>
+                  <Link to="/browse">Browse</Link>
+                </li>
+              </>
+            )}
           </ul>
 
           {!user ? (
@@ -65,14 +78,24 @@ const Navbar = () => {
             <Popover>
               <PopoverTrigger>
                 <Avatar className="cursor-pointer">
-                  <AvatarImage src={user?.profile?.profilePhoto || "https://photosking.net/wp-content/uploads/2024/05/no-dp-pic_23.webp"} />
+                  <AvatarImage
+                    src={
+                      user?.profile?.profilePhoto ||
+                      "https://photosking.net/wp-content/uploads/2024/05/no-dp-pic_23.webp"
+                    }
+                  />
                 </Avatar>
               </PopoverTrigger>
               <PopoverContent className="w-80">
                 <div className="">
                   <div className="flex gap-2 space-y-2">
                     <Avatar className="cursor-pointer mt-3">
-                      <AvatarImage src={user?.profile?.profilePhoto || "https://photosking.net/wp-content/uploads/2024/05/no-dp-pic_23.webp" } />
+                      <AvatarImage
+                        src={
+                          user?.profile?.profilePhoto ||
+                          "https://photosking.net/wp-content/uploads/2024/05/no-dp-pic_23.webp"
+                        }
+                      />
                     </Avatar>
                     <div>
                       <h4 className="font-medium"> {user?.fullname}</h4>
@@ -82,12 +105,15 @@ const Navbar = () => {
                     </div>
                   </div>
                   <div className="flex flex-col my-2 text-gray-600">
-                    <div className="flex w-fit items-center gap-2 cursor-pointer">
-                      <UserRound></UserRound>
-                      <Button variant="link">
-                        <Link to={"/profile"}>View profile</Link>
-                      </Button>
-                    </div>
+                    {user && user.role === "student" && (
+                      <div className="flex w-fit items-center gap-2 cursor-pointer">
+                        <UserRound></UserRound>
+                        <Button variant="link">
+                          <Link to={"/profile"}>View profile</Link>
+                        </Button>
+                      </div>
+                    )}
+
                     <div className="flex w-fit items-center gap-2 cursor-pointer">
                       <LogOut></LogOut>
                       <Button onClick={logOutHandler} variant="link">
