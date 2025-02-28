@@ -13,7 +13,7 @@ export const postJob = async (req, res) => {
       createdBy,
       applicaitons,
       experience,
-      location
+      location,
     } = req.body;
     const userId = req.id;
 
@@ -68,7 +68,7 @@ export const getAllJob = async (req, res) => {
     };
 
     const jobs = await Job.find(query).populate({
-      path:"companyId"
+      path: "companyId",
     });
     if (!jobs) {
       return res.status(404).json({
@@ -76,7 +76,6 @@ export const getAllJob = async (req, res) => {
         success: false,
       });
     }
-
     return res.status(200).json({
       jobs,
       success: true,
@@ -90,7 +89,7 @@ export const getJobById = async (req, res) => {
   try {
     const jobId = req.params.id;
     const job = await Job.findById(jobId).populate({
-      path:"applications"
+      path: "applications",
     });
 
     if (!job) {
@@ -111,8 +110,8 @@ export const getJobById = async (req, res) => {
 export const getAdminJobs = async (req, res) => {
   const adminId = req.id;
   const jobs = await Job.find({ createdBy: adminId }).populate({
-    path:'companyId',
-    createdAt:-1
+    path: "companyId",
+    createdAt: -1,
   });
 
   if (!jobs) {
@@ -126,4 +125,13 @@ export const getAdminJobs = async (req, res) => {
     jobs,
     success: true,
   });
+};
+
+export const getLatestJobs = async (req, res) => {
+  try {
+    const jobs = await Job.find().sort({ createdAt: -1 }).limit(6);  // Sort by date, limit to 6
+    res.status(200).json({ jobs, success: true });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch jobs", success: false });
+  }
 };
