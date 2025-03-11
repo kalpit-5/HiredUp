@@ -11,6 +11,7 @@ import { USER_API_END_POINT } from "@/utils/constant";
 import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "@/redux/authSlice";
+import { useEffect } from "react";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -22,7 +23,7 @@ const Signup = () => {
     file: "",
   });
 
-  const { loading } = useSelector((store) => store.auth);
+  const { loading,user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -67,7 +68,11 @@ const Signup = () => {
       dispatch(setLoading(false));
     }
   };
-
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div>
       <Navbar />
@@ -122,30 +127,7 @@ const Signup = () => {
           </div>
 
           <div className="flex items-center justify-between ">
-            {/* <RadioGroup className="flex items-center gap-4 my-5">
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="student"
-                  checked={input.role === "student"}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="option-one">Student</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="recruiter"
-                  checked={input.role === "recruiter"}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="option-two">Recruiter</Label>
-              </div>
-            </RadioGroup> */}
+           
 
             <RadioGroup className="flex items-center gap-4 my-5">
   <div className="flex items-center space-x-2">

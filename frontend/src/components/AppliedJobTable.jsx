@@ -12,7 +12,7 @@ import { Badge } from "./ui/badge";
 import { useSelector } from "react-redux";
 
 const AppliedJobTable = () => {
-  const { allAppliedJobs } = useSelector(store => store.job);
+  const { allAppliedJobs } = useSelector((store) => store.job);
 
   // Function to get status color class
   const getStatusColor = (status) => {
@@ -46,7 +46,16 @@ const AppliedJobTable = () => {
           ) : (
             allAppliedJobs.map((appliedJob) => (
               <TableRow key={appliedJob._id}>
-                <TableCell>{appliedJob?.createdAt.split("T")[0]}</TableCell>
+                {/* <TableCell>{appliedJob?.createdAt.split("T")[0]}</TableCell> */}
+                <TableCell>
+                  {(() => {
+                    const dateParts = appliedJob?.createdAt
+                      .split("T")[0]
+                      .split("-");
+                    return `${dateParts[2]} - ${dateParts[1]} - ${dateParts[0]}`;
+                  })()}
+                </TableCell>
+
                 <TableCell>{appliedJob?.job?.title}</TableCell>
                 <TableCell>{appliedJob?.job?.companyId?.name}</TableCell>
                 <TableCell className="text-right">
