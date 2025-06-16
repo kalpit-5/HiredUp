@@ -18,12 +18,12 @@ const Home = () => {
       navigate("/admin/companies");
     }
   }, []);
-  
+
   return (
     <div>
       <Navbar />
       <HeroSection />
-      <CategoryCarousel />
+      {/* <CategoryCarousel /> */}
       <LatestJobs />
       <Footer />
     </div>
