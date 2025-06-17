@@ -6,6 +6,14 @@ Full‑Stack Job Portal (MERN) – A powerful, full-featured web application bui
 
 ---
 
+
+## 🔗 Live Demo
+
+Check out the live version of HiredUp here:  
+🌐 [https://hiredup.onrender.com/](https://hiredup.onrender.com/)
+
+---
+
 ## 📸 Screenshots
 
 ### Home Page
